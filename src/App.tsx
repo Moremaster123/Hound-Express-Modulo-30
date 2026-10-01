@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Header } from './components/Header.tsx';
 import { GuideForm } from './components/GuideForm.tsx';
 import { StatusPanel } from './components/StatusPanel.tsx';
@@ -6,41 +7,17 @@ import { GuideList } from './components/GuideList.tsx';
 import { QuoteForm } from './components/QuoteForm.tsx';
 import { ServiceFinder } from './components/ServiceFinder.tsx';
 import type { Guide } from './types/types.ts';
-import './App.css'; 
+import type { RootState } from './store/store';
+import './App.css';
 
 function App() {
-  const [guides, setGuides] = useState<Guide[]>([]);
+  const guides = useSelector((state: RootState) => state.guides.guides);
   const [selectedGuide, setSelectedGuide] = useState<Guide | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     console.log('El estado de guías ha cambiado:', guides);
   }, [guides]);
-
-  const handleAddGuide = (nuevaGuia: Guide) => {
-    setGuides([...guides, nuevaGuia]);
-  };
-
-  const handleCambiarEstado = (guiaTarget: Guide) => {
-    setGuides((prevGuides) =>
-      prevGuides.map((guia) => {
-        if (guia.numero === guiaTarget.numero) {
-          let nuevoEstado = guia.estado;
-          if (guia.estado === 'Pendiente') nuevoEstado = 'En tránsito';
-          else if (guia.estado === 'En tránsito') nuevoEstado = 'Entregada';
-
-          if (nuevoEstado !== guia.estado) {
-            return {
-              ...guia,
-              estado: nuevoEstado,
-              historial: [...guia.historial, { estado: nuevoEstado, fecha: new Date().toLocaleString() }],
-            };
-          }
-        }
-        return guia;
-      })
-    );
-  };
 
   return (
     <>
@@ -49,9 +26,9 @@ function App() {
         <ServiceFinder />
         <QuoteForm />
         <hr style={{ margin: '30px 0', border: '0', borderTop: '1px solid #ccc' }} />
-        <GuideForm guides={guides} onAddGuide={handleAddGuide} />
+        <GuideForm />
         <StatusPanel guides={guides} />
-        <GuideList guides={guides} onCambiarEstado={handleCambiarEstado} onVerHistorial={(g) => { setSelectedGuide(g); setShowModal(true); }} />
+        <GuideList onVerHistorial={(g) => { setSelectedGuide(g); setShowModal(true); }} />
       </main>
 
       {showModal && selectedGuide && (

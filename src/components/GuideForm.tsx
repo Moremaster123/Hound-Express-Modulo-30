@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import type { Guide, GuideStatus } from '../types/types';
+import { useDispatch, useSelector } from 'react-redux';
+import type { GuideStatus } from '../types/types';
+import type { RootState } from '../store/store';
+import { addGuide } from '../store/guidesSlice';
 
-interface GuideFormProps {
-  guides: Guide[];
-  onAddGuide: (guide: Guide) => void;
-}
+export const GuideForm: React.FC = () => {
+  const dispatch = useDispatch();
+  const guides = useSelector((state: RootState) => state.guides.guides);
 
-export const GuideForm: React.FC<GuideFormProps> = ({ guides, onAddGuide }) => {
   const [destinatario, setDestinatario] = useState('');
   const [numero, setNumero] = useState('');
   const [origen, setOrigen] = useState('');
@@ -31,7 +32,7 @@ export const GuideForm: React.FC<GuideFormProps> = ({ guides, onAddGuide }) => {
 
     setError('');
 
-    onAddGuide({
+    dispatch(addGuide({
       destinatario,
       numero,
       origen,
@@ -39,7 +40,7 @@ export const GuideForm: React.FC<GuideFormProps> = ({ guides, onAddGuide }) => {
       fecha,
       estado,
       historial: [{ estado, fecha: new Date().toLocaleString() }]
-    });
+    }));
 
     setDestinatario('');
     setNumero('');
@@ -55,19 +56,19 @@ export const GuideForm: React.FC<GuideFormProps> = ({ guides, onAddGuide }) => {
       <form className="registro__formulario" onSubmit={handleSubmit}>
         <label className="registro__label">Destinatario</label>
         <input className="registro__input" type="text" placeholder="Nombre del destinatario" value={destinatario} onChange={(e) => setDestinatario(e.target.value)} />
-        
+
         <label className="registro__label">Número de guía</label>
         <input className="registro__input" type="text" placeholder="Ej. HE-001" value={numero} onChange={(e) => setNumero(e.target.value)} />
-        
+
         <label className="registro__label">Origen</label>
         <input className="registro__input" type="text" placeholder="Ej. Puebla" value={origen} onChange={(e) => setOrigen(e.target.value)} />
-        
+
         <label className="registro__label">Destino</label>
         <input className="registro__input" type="text" placeholder="Ej. Ciudad de México" value={destino} onChange={(e) => setDestino(e.target.value)} />
-        
+
         <label className="registro__label">Fecha de creación</label>
         <input className="registro__input" type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} />
-        
+
         <label className="registro__label">Estado inicial</label>
         <select className="registro__select" value={estado} onChange={(e) => setEstado(e.target.value as GuideStatus)}>
           <option value="Pendiente">Pendiente</option>
