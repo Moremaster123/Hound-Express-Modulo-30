@@ -1,5 +1,5 @@
-import { useState, useEffect, useReducer } from 'react';
-import { guidesReducer, addGuide, updateGuideStatus } from './reducers/guidesReducer.ts';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Header } from './components/Header.tsx';
 import { GuideForm } from './components/GuideForm.tsx';
 import { StatusPanel } from './components/StatusPanel.tsx';
@@ -7,24 +7,17 @@ import { GuideList } from './components/GuideList.tsx';
 import { QuoteForm } from './components/QuoteForm.tsx';
 import { ServiceFinder } from './components/ServiceFinder.tsx';
 import type { Guide } from './types/types.ts';
-import './App.css'; 
+import type { RootState } from './store/store';
+import './App.css';
 
 function App() {
-  const [guides, dispatch] = useReducer(guidesReducer, []);
+  const guides = useSelector((state: RootState) => state.guides.guides);
   const [selectedGuide, setSelectedGuide] = useState<Guide | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     console.log('El estado de guías ha cambiado:', guides);
   }, [guides]);
-
-  const handleAddGuide = (nuevaGuia: Guide) => {
-    dispatch(addGuide(nuevaGuia));
-  };
-
-  const handleCambiarEstado = (guiaTarget: Guide) => {
-    dispatch(updateGuideStatus(guiaTarget.numero));
-  };
 
   return (
     <>
@@ -33,9 +26,9 @@ function App() {
         <ServiceFinder />
         <QuoteForm />
         <hr style={{ margin: '30px 0', border: '0', borderTop: '1px solid #ccc' }} />
-        <GuideForm guides={guides} onAddGuide={handleAddGuide} />
+        <GuideForm />
         <StatusPanel guides={guides} />
-        <GuideList guides={guides} onCambiarEstado={handleCambiarEstado} onVerHistorial={(g) => { setSelectedGuide(g); setShowModal(true); }} />
+        <GuideList onVerHistorial={(g) => { setSelectedGuide(g); setShowModal(true); }} />
       </main>
 
       {showModal && selectedGuide && (

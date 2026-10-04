@@ -1,6 +1,7 @@
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { screen, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
+import { renderConStore } from './testUtils';
 
 const registrarGuia = async (user: ReturnType<typeof userEvent.setup>, numero: string) => {
   await user.type(screen.getByPlaceholderText('Nombre del destinatario'), 'Juan Pérez');
@@ -24,7 +25,7 @@ describe('App', () => {
 
   test('una guía registrada aparece en la lista y en el panel de estado', async () => {
     const user = userEvent.setup();
-    render(<App />);
+    renderConStore(<App />);
 
     await registrarGuia(user, 'HE-001');
 
@@ -35,7 +36,7 @@ describe('App', () => {
 
   test('no permite registrar dos guías con el mismo número', async () => {
     const user = userEvent.setup();
-    render(<App />);
+    renderConStore(<App />);
 
     await registrarGuia(user, 'HE-001');
     await registrarGuia(user, 'HE-001');
@@ -46,7 +47,7 @@ describe('App', () => {
 
   test('el botón "Cambiar estado" avanza la guía en el orden definido', async () => {
     const user = userEvent.setup();
-    render(<App />);
+    renderConStore(<App />);
     await registrarGuia(user, 'HE-001');
     const cambiarEstado = screen.getByRole('button', { name: 'Cambiar estado' });
 
@@ -67,7 +68,7 @@ describe('App', () => {
 
   test('el historial muestra los estados por los que pasó la guía', async () => {
     const user = userEvent.setup();
-    render(<App />);
+    renderConStore(<App />);
     await registrarGuia(user, 'HE-001');
     await user.click(screen.getByRole('button', { name: 'Cambiar estado' }));
 

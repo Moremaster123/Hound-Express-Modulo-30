@@ -1,13 +1,17 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import type { Guide } from '../types/types.ts';
+import type { RootState } from '../store/store';
+import { updateGuideStatus } from '../store/guidesSlice';
 
 interface GuideListProps {
-  guides: Guide[];
-  onCambiarEstado: (guia: Guide) => void;
   onVerHistorial: (guia: Guide) => void;
 }
 
-export const GuideList: React.FC<GuideListProps> = ({ guides, onCambiarEstado, onVerHistorial }) => {
+export const GuideList: React.FC<GuideListProps> = ({ onVerHistorial }) => {
+  const dispatch = useDispatch();
+  const guides = useSelector((state: RootState) => state.guides.guides);
+
   return (
     <section className="lista">
       <h2 className="lista__titulo">Lista de Guías</h2>
@@ -20,7 +24,7 @@ export const GuideList: React.FC<GuideListProps> = ({ guides, onCambiarEstado, o
             <p>Origen: {guia.origen}</p>
             <p>Destino: {guia.destino}</p>
             <p>Fecha de creación: {guia.fecha}</p>
-            <button className="boton-estado" onClick={() => onCambiarEstado(guia)}>Cambiar estado</button>
+            <button className="boton-estado" onClick={() => dispatch(updateGuideStatus(guia.numero))}>Cambiar estado</button>
             <button className="boton-historial" onClick={() => onVerHistorial(guia)}>Ver historial</button>
           </article>
         ))}
