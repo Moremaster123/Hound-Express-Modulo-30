@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
+import { guidesReducer, addGuide, updateGuideStatus } from './reducers/guidesReducer.ts';
 import { Header } from './components/Header.tsx';
 import { GuideForm } from './components/GuideForm.tsx';
 import { StatusPanel } from './components/StatusPanel.tsx';
@@ -9,7 +10,7 @@ import type { Guide } from './types/types.ts';
 import './App.css'; 
 
 function App() {
-  const [guides, setGuides] = useState<Guide[]>([]);
+  const [guides, dispatch] = useReducer(guidesReducer, []);
   const [selectedGuide, setSelectedGuide] = useState<Guide | null>(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -18,28 +19,11 @@ function App() {
   }, [guides]);
 
   const handleAddGuide = (nuevaGuia: Guide) => {
-    setGuides([...guides, nuevaGuia]);
+    dispatch(addGuide(nuevaGuia));
   };
 
   const handleCambiarEstado = (guiaTarget: Guide) => {
-    setGuides((prevGuides) =>
-      prevGuides.map((guia) => {
-        if (guia.numero === guiaTarget.numero) {
-          let nuevoEstado = guia.estado;
-          if (guia.estado === 'Pendiente') nuevoEstado = 'En tránsito';
-          else if (guia.estado === 'En tránsito') nuevoEstado = 'Entregada';
-
-          if (nuevoEstado !== guia.estado) {
-            return {
-              ...guia,
-              estado: nuevoEstado,
-              historial: [...guia.historial, { estado: nuevoEstado, fecha: new Date().toLocaleString() }],
-            };
-          }
-        }
-        return guia;
-      })
-    );
+    dispatch(updateGuideStatus(guiaTarget.numero));
   };
 
   return (
