@@ -49,7 +49,7 @@ describe('App', () => {
     const user = userEvent.setup();
     renderConStore(<App />);
     await registrarGuia(user, 'HE-001');
-    const cambiarEstado = screen.getByRole('button', { name: 'Cambiar estado' });
+    const cambiarEstado = screen.getByRole('button', { name: 'Cambiar estado de la guía HE-001' });
 
     await user.click(cambiarEstado);
     expect(screen.getByText('Estado: En tránsito')).toBeInTheDocument();
@@ -70,9 +70,9 @@ describe('App', () => {
     const user = userEvent.setup();
     renderConStore(<App />);
     await registrarGuia(user, 'HE-001');
-    await user.click(screen.getByRole('button', { name: 'Cambiar estado' }));
+    await user.click(screen.getByRole('button', { name: 'Cambiar estado de la guía HE-001' }));
 
-    await user.click(screen.getByRole('button', { name: 'Ver historial' }));
+    await user.click(screen.getByRole('button', { name: 'Ver historial de la guía HE-001' }));
 
     const historial = within(document.getElementById('historial-guia')!);
     expect(screen.getByText('Historial de la guía: HE-001')).toBeInTheDocument();

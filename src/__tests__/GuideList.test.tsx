@@ -28,7 +28,7 @@ describe('GuideList', () => {
     const guides = [crearGuia({ numero: 'HE-001' }), crearGuia({ numero: 'HE-002' })];
     const { store } = renderConStore(<GuideList onVerHistorial={jest.fn()} />, guides);
 
-    await userEvent.click(screen.getAllByRole('button', { name: 'Cambiar estado' })[1]);
+    await userEvent.click(screen.getByRole('button', { name: 'Cambiar estado de la guía HE-002' }));
 
     const [primera, segunda] = store.getState().guides.guides;
     expect(primera.estado).toBe('Pendiente');
@@ -39,7 +39,7 @@ describe('GuideList', () => {
   test('"Cambiar estado" respeta el orden y se detiene en Entregada', async () => {
     const user = userEvent.setup();
     const { store } = renderConStore(<GuideList onVerHistorial={jest.fn()} />, [crearGuia()]);
-    const boton = screen.getByRole('button', { name: 'Cambiar estado' });
+    const boton = screen.getByRole('button', { name: 'Cambiar estado de la guía HE-001' });
 
     await user.click(boton);
     expect(screen.getByText('Estado: En tránsito')).toBeInTheDocument();
@@ -57,7 +57,7 @@ describe('GuideList', () => {
     const guides = [crearGuia()];
     renderConStore(<GuideList onVerHistorial={onVerHistorial} />, guides);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Ver historial' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Ver historial de la guía HE-001' }));
 
     expect(onVerHistorial).toHaveBeenCalledWith(guides[0]);
   });
