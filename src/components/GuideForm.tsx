@@ -54,28 +54,28 @@ export const GuideForm: React.FC = () => {
     <section className="registro">
       <h2 className="registro__titulo">Registrar nueva guía</h2>
       <form className="registro__formulario" onSubmit={handleSubmit}>
-        <label className="registro__label">Destinatario</label>
-        <input className="registro__input" type="text" placeholder="Nombre del destinatario" value={destinatario} onChange={(e) => setDestinatario(e.target.value)} />
+        <label className="registro__label" htmlFor="guia-destinatario">Destinatario</label>
+        <input className="registro__input" id="guia-destinatario" type="text" placeholder="Nombre del destinatario" value={destinatario} onChange={(e) => setDestinatario(e.target.value)} />
 
-        <label className="registro__label">Número de guía</label>
-        <input className="registro__input" type="text" placeholder="Ej. HE-001" value={numero} onChange={(e) => setNumero(e.target.value)} />
+        <label className="registro__label" htmlFor="guia-numero">Número de guía</label>
+        <input className="registro__input" id="guia-numero" type="text" placeholder="Ej. HE-001" value={numero} onChange={(e) => setNumero(e.target.value)} />
 
-        <label className="registro__label">Origen</label>
-        <input className="registro__input" type="text" placeholder="Ej. Puebla" value={origen} onChange={(e) => setOrigen(e.target.value)} />
+        <label className="registro__label" htmlFor="guia-origen">Origen</label>
+        <input className="registro__input" id="guia-origen" type="text" placeholder="Ej. Puebla" value={origen} onChange={(e) => setOrigen(e.target.value)} />
 
-        <label className="registro__label">Destino</label>
-        <input className="registro__input" type="text" placeholder="Ej. Ciudad de México" value={destino} onChange={(e) => setDestino(e.target.value)} />
+        <label className="registro__label" htmlFor="guia-destino">Destino</label>
+        <input className="registro__input" id="guia-destino" type="text" placeholder="Ej. Ciudad de México" value={destino} onChange={(e) => setDestino(e.target.value)} />
 
-        <label className="registro__label">Fecha de creación</label>
-        <input className="registro__input" type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} />
+        <label className="registro__label" htmlFor="guia-fecha">Fecha de creación</label>
+        <input className="registro__input" id="guia-fecha" type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} />
 
-        <label className="registro__label">Estado inicial</label>
-        <select className="registro__select" value={estado} onChange={(e) => setEstado(e.target.value as GuideStatus)}>
+        <label className="registro__label" htmlFor="guia-estado">Estado inicial</label>
+        <select className="registro__select" id="guia-estado" value={estado} onChange={(e) => setEstado(e.target.value as GuideStatus)}>
           <option value="Pendiente">Pendiente</option>
           <option value="En tránsito">En tránsito</option>
           <option value="Entregada">Entregada</option>
         </select>
-        <p className="registro__error" id="mensaje-error" style={{ color: 'red' }}>{error}</p>
+        <p className="registro__error" id="mensaje-error" role="alert" aria-live="polite" style={{ color: 'red' }}>{error}</p>
         <button className="registro__boton" type="submit">Registrar guía</button>
       </form>
     </section>

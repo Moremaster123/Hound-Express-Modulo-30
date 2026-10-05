@@ -16,20 +16,36 @@ export const ServiceFinder: React.FC = () => {
 
   return (
     <section className="servicios">
-      <h2>Buscar Servicios</h2>
+      <h2 id="titulo-servicios">Buscar Servicios</h2>
+      <label className="sr-only" htmlFor="buscador">Buscar un servicio de envío</label>
       <input type="text" id="buscador" placeholder="Buscar..." value={busqueda} onChange={(e) => setBusqueda(e.target.value)} />
       <div className="servicios-contenedor" style={{ display: 'flex', gap: '10px', marginTop: '10px', justifyContent: 'center' }}>
         {serviciosFiltrados.map(s => (
           <div key={s.id} className="producto">
             <h3>{s.nombre}</h3>
-            <button className="producto__boton" onClick={() => { setModalText(s.descripcion); setShowModal(true); }}>Ver más info</button>
+            <button className="producto__boton" aria-label={`Ver más información sobre ${s.nombre}`} onClick={() => { setModalText(s.descripcion); setShowModal(true); }}>Ver más info</button>
           </div>
         ))}
       </div>
       {showModal && (
-        <div className="modal" id="modal" style={{ display: 'block', position: 'fixed', background: 'rgba(0,0,0,0.5)', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2000 }}>
+        <div className="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-servicio" onKeyDown={(event) => {
+          if (event.key === 'Escape') setShowModal(false);
+          if (event.key === 'Tab') {
+            const focusable = event.currentTarget.querySelectorAll<HTMLElement>('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+              event.preventDefault();
+              last?.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+              event.preventDefault();
+              first?.focus();
+            }
+          }
+        }} style={{ display: 'block', position: 'fixed', background: 'rgba(0,0,0,0.5)', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2000 }}>
           <div className="modal__contenido" style={{ background: 'white', margin: '15% auto', padding: '20px', width: '50%', color: '#333' }}>
-            <button id="cerrar-modal" onClick={() => setShowModal(false)}>X</button>
+            <h3 id="titulo-modal-servicio" className="sr-only">Información del servicio</h3>
+            <button id="cerrar-modal" aria-label="Cerrar información del servicio" autoFocus onClick={() => setShowModal(false)}>X</button>
             <p className="modal__texto">{modalText}</p>
           </div>
         </div>

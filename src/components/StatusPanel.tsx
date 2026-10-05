@@ -16,15 +16,15 @@ export const StatusPanel: React.FC<StatusPanelProps> = ({ guides }) => {
       <div className="estado__contenedor">
         <article className="estado__tarjeta">
           <h3 className="estado__subtitulo">Guías activas</h3>
-          <p className="estado__numero" id="guias-activas">{activas}</p>
+          <p className="estado__numero" id="guias-activas" role="status" aria-live="polite">{activas}</p>
         </article>
         <article className="estado__tarjeta">
           <h3 className="estado__subtitulo">En tránsito</h3>
-          <p className="estado__numero" id="guias-transito">{transito}</p>
+          <p className="estado__numero" id="guias-transito" role="status" aria-live="polite">{transito}</p>
         </article>
         <article className="estado__tarjeta">
           <h3 className="estado__subtitulo">Entregadas</h3>
-          <p className="estado__numero" id="guias-entregadas">{entregadas}</p>
+          <p className="estado__numero" id="guias-entregadas" role="status" aria-live="polite">{entregadas}</p>
         </article>
       </div>
     </section>

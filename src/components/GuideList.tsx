@@ -24,8 +24,8 @@ export const GuideList: React.FC<GuideListProps> = ({ onVerHistorial }) => {
             <p>Origen: {guia.origen}</p>
             <p>Destino: {guia.destino}</p>
             <p>Fecha de creación: {guia.fecha}</p>
-            <button className="boton-estado" onClick={() => dispatch(updateGuideStatus(guia.numero))}>Cambiar estado</button>
-            <button className="boton-historial" onClick={() => onVerHistorial(guia)}>Ver historial</button>
+            <button className="boton-estado" aria-label={`Cambiar estado de la guía ${guia.numero}`} onClick={() => dispatch(updateGuideStatus(guia.numero))}>Cambiar estado</button>
+            <button className="boton-historial" aria-label={`Ver historial de la guía ${guia.numero}`} onClick={() => onVerHistorial(guia)}>Ver historial</button>
           </article>
         ))}
       </div>
